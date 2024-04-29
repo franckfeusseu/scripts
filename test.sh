@@ -1,0 +1,14 @@
+function create_db() {
+psql -v ON_ERROR_STOP=1 --username "$DB_USER" <<-EOSQL
+  CREATE DATABASE $DB_NAME;
+  CREATE USER $DB_USER;
+  GRANT ALL ON DATABASE $DB_NAME TO "$DB_USER";
+  ALTER USER $DB_USER PASSWORD "$DB_PASSWORD";
+  ALTER USER $DB_USER CREATEDB;
+EOSQL
+}
+
+if [ $DB_USER = pweb ]
+  then create_db;
+fi 
+
